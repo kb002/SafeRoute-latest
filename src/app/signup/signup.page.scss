@@ -1,0 +1,164 @@
+.signup-content {
+  --background: #1B3333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Made Tommy', sans-serif;
+  text-align: center;
+  padding: 2rem;
+
+  * {
+    font-family: 'Made Tommy', sans-serif;
+  }
+
+  ion-icon {
+    color: currentColor;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #E6DDCC;
+
+    ion-button {
+      color: inherit;
+      font-weight: 400;
+      font-size: 1rem;
+    }
+
+    ion-icon {
+      font-size: 1rem;
+      margin-right: 4px;
+      opacity: 0.75;
+    }
+  }
+
+  .welcome-message {
+    margin-top: 150px;
+    margin-bottom: 20px;
+
+    h1 {
+      color: #E6DDCC;
+      font-weight: 500;
+      font-size: 1.5rem;
+    }
+  }
+
+  .input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+
+    .input-box {
+      background: rgba(235, 240, 233, 0.2);
+      border-radius: 15px;
+      width: 300px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.30);
+      color: #E6DDCC;
+
+      ion-icon {
+        font-size: 1.4rem;
+        margin-right: 15px;
+        flex-shrink: 0;
+        opacity: 0.75;
+      }
+
+      ion-input {
+        --background: transparent;
+        --color: #E6DDCC;
+        --placeholder-color: #E6DDCC;
+        --placeholder-opacity: 1;
+        --highlight-color-focused: #E1A96C;
+        font-size: 1rem;
+        font-weight: 400;
+        width: 100%;
+        height: 100%;
+        text-align: left;
+      }
+
+      ion-input::part(native) {
+        font-weight: 400;
+      }
+    }
+
+    .phone-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .phone-prefix {
+        color: #E6DDCC;
+        font-size: 1rem;
+        font-weight: 400;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .terms {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    max-width: 300px;
+    text-align: left;
+    gap: 10px;
+
+    ion-checkbox {
+      --size: 18px;
+      --checkmark-color: #1B3333;
+      --background: #E6DDCC;
+      --border-color: #E6DDCC;
+    }
+
+    p {
+      color: #E6DDCC;
+      font-size: 0.875rem;
+      margin: 0;
+      font-weight: 300;
+
+      a {
+        color: #E1A96C !important;
+        text-decoration: none;
+        font-weight: 300;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .button-container {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .login-prompt {
+    margin-top: -5px;
+    color: #E6DDCC;
+    font-weight: 400;
+    font-size: 0.875rem;
+
+    a {
+      color: #E1A96C !important;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+  }
+
+  .errors {
+    font-family: 'Made Tommy', sans-serif;
+    margin-top: -8px !important;
+    text-align: left !important;
+    color: #E1A96C;
+    font-size: 0.875rem;
+  }
+}

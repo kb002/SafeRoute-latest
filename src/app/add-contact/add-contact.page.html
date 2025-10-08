@@ -1,0 +1,50 @@
+<ion-header class="modal-header">
+  <ion-toolbar>
+    <ion-title>Add Contact</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [forceOverscroll]="false" class="modal-content">
+
+  <!-- Contact Name -->
+  <ion-item>
+    <ion-label position="stacked">Contact Name</ion-label>
+    <ion-input [(ngModel)]="newContact.name"></ion-input>
+  </ion-item>
+
+  <!-- Email -->
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input
+      type="email"
+      [(ngModel)]="newContact.email"
+      placeholder="example@email.com"
+    ></ion-input>
+  </ion-item>
+
+  <!-- Relationship (Dropdown Select) -->
+  <ion-item>
+    <ion-label position="stacked">Relationship</ion-label>
+    <ion-select
+      [(ngModel)]="newContact.relationship"
+      interface="popover"
+      placeholder="Select Relationship"
+    >
+      <ion-select-option *ngFor="let rel of relationshipOptions" [value]="rel">
+        {{ rel }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Buttons -->
+  <div class="modal-buttons">
+    <ion-button class="save-btn" (click)="saveContact()">Save</ion-button>
+    <ion-button class="cancel-btn" (click)="goBack()">Cancel</ion-button>
+  </div>
+
+</ion-content>

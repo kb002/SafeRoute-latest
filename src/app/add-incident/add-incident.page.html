@@ -1,0 +1,89 @@
+<ion-header class="modal-header">
+  <ion-toolbar>
+    <ion-title>Report an Incident</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="goBack()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [forceOverscroll]="false" class="modal-content">
+
+  <!-- Category -->
+  <ion-item>
+    <ion-label position="stacked">Category</ion-label>
+    <ion-select
+      [(ngModel)]="incident.category"
+      name="category"
+      (ionChange)="onCategoryChange()"
+      interface="popover"
+      placeholder="Select Category"
+    >
+      <ion-select-option *ngFor="let category of categories" [value]="category">
+        {{ category }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Other Category -->
+  <ion-item *ngIf="showOtherCategory">
+    <ion-label position="stacked">Specify Category</ion-label>
+    <ion-input [(ngModel)]="incident.otherCategory" name="otherCategory"></ion-input>
+  </ion-item>
+
+  <!-- Barangay -->
+  <ion-item>
+    <ion-label position="stacked">Barangay</ion-label>
+    <ion-select
+      [(ngModel)]="incident.barangay"
+      name="barangay"
+      interface="popover"
+      placeholder="Select Barangay"
+    >
+      <ion-select-option *ngFor="let b of barangays" [value]="b">{{ b }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Landmark -->
+  <ion-item>
+    <ion-label position="stacked">Landmark</ion-label>
+    <ion-input [(ngModel)]="incident.landmark" name="landmark" placeholder="e.g. Near CSU Gym"></ion-input>
+  </ion-item>
+
+  <!-- Description -->
+  <ion-item>
+    <ion-label position="stacked">
+      Description <span class="optional">(Optional)</span>
+    </ion-label>
+    <ion-textarea [(ngModel)]="incident.description" name="description"></ion-textarea>
+  </ion-item>
+
+  <!-- Date -->
+  <ion-item>
+    <ion-label position="stacked">Date</ion-label>
+    <ion-input
+      type="date"
+      [(ngModel)]="incident.date"
+      name="date"
+    ></ion-input>
+  </ion-item>
+
+  <!-- Time -->
+  <ion-item>
+    <ion-label position="stacked">Time</ion-label>
+    <ion-input
+      type="time"
+      [(ngModel)]="incident.time"
+      name="time"
+    ></ion-input>
+  </ion-item>
+
+  <!-- Buttons -->
+  <div class="modal-buttons">
+    <ion-button class="save-btn" (click)="submitReport()">Submit</ion-button>
+    <ion-button class="cancel-btn" (click)="goBack()">Cancel</ion-button>
+  </div>
+
+</ion-content>

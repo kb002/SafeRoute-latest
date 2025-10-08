@@ -1,0 +1,214 @@
+.profile-content {
+  --background: #1B3333;
+  font-family: 'Made Tommy', sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* Header */
+  .header {
+    background-color: #1C2727;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    width: 100%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+
+    h1 {
+      padding-top: 20px;
+      margin: 0;
+      color: #E6DDCC;
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+  }
+
+  /* Avatar */
+  .profile-avatar {
+    margin-top: 20px;
+
+    ion-icon {
+      font-size: 5rem; /* smaller for mobile */
+      color: #E1A96C;
+    }
+  }
+
+  /* Name */
+  .profile-name {
+    color: #E6DDCC;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+
+  /* Card */
+  .profile-card {
+    background-color: #E1A96C;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px auto 0;
+    width: 90%; /* more room on mobile */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+
+    .profile-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(27, 51, 51, 0.3);
+
+      ion-icon {
+        color: #1B3333;
+        font-size: 1.2rem;
+        margin-right: 8px;
+      }
+
+      span {
+        color: #1B3333;
+        font-size: 0.95rem;
+        font-weight: 400;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    /* Logout button */
+    .logout-button {
+      background-color: #1C2727;
+      color: #E6DDCC;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+    }
+  }
+}
+
+/* Edit button */
+.edit-profile-btn {
+  --background: #1C2727;
+  --color: #E6DDCC;
+  --border-radius: 10px;
+  font-weight: 400;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  margin: 12px auto 0;
+  text-transform: none;
+  &::part(native) {
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  }
+}
+
+ion-content {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+/* Modal container */
+.edit-profile-modal {
+  font-family: 'Made Tommy', sans-serif;
+
+  ion-toolbar {
+    --background: #1C2727;
+    --color: #E6DDCC;
+    margin-top: 20px;
+  }
+
+  .modal-header {
+    background-color: #1C2727;
+    color: #E6DDCC;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+    padding: 12px;
+
+    ion-title {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    ion-button {
+      color: #E1A96C;
+
+      ion-icon {
+        font-size: 1.3rem;
+        color: #E6DDCC;
+      }
+    }
+  }
+
+  .modal-content {
+    --background: #1B3333;
+    padding: 15px;
+
+    ion-item {
+      margin-top: 15px;
+      --background: transparent;
+      --color: #E6DDCC;
+      --border-color: rgba(225, 169, 108, 0.5);
+      border-radius: 10px;
+      margin-bottom: 12px;
+
+      ion-label {
+        color: #E1A96C;
+        font-size: 0.9rem;
+        font-weight: 300;
+      }
+
+      ion-input,
+      ion-select {
+        color: #E6DDCC;
+        font-size: 0.95rem;
+        font-weight: 300;
+      }
+    }
+
+    .modal-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+
+      .save-btn {
+        --background: #E1A96C;
+        --color: #1C2727;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 8px 0;
+        width: 180px;
+        height: 32px;
+        text-transform: none;
+      }
+
+      .cancel-btn {
+        --background: #1C2727;
+        --color: #E6DDCC;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 8px 0;
+        width: 180px;
+        height: 32px;
+        text-transform: none;
+      }
+    }
+  }
+
+  .change-password-btn {
+    --color: #E1A96C;
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-top: 10px;
+  }
+}

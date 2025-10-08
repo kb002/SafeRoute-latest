@@ -1,0 +1,7 @@
+{
+  "name": "OwnTabs",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

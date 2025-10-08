@@ -1,0 +1,130 @@
+<ion-content [fullscreen]="true" class="profile-content">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <ion-button fill="clear" class="back-text-btn" (click)="goBack()">
+        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+          Back
+      </ion-button>
+    </h1>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Profile -->
+  <ng-container *ngIf="!loading && user">
+    <div class="profile-avatar">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </div>
+
+    <h2 class="profile-name">
+      {{ user?.displayName || 'Friendly Neighborhood' }}
+    </h2>
+
+    <div class="profile-card">
+      <div class="profile-row">
+        <ion-icon name="mail"></ion-icon>
+        <span>{{ user?.email }}</span>
+      </div>
+
+      <div class="profile-row">
+        <ion-icon name="call"></ion-icon>
+        <span>{{ phone || 'No phone' }}</span>
+      </div>
+
+      <div class="profile-row">
+        <ion-icon name="location"></ion-icon>
+        <span>{{ address || 'No address' }}</span>
+      </div>
+
+      <div class="profile-row">
+        <ion-icon name="lock-closed"></ion-icon>
+        <span>••••••••</span>
+      </div>
+
+      <!-- Edit button -->
+      <ion-button expand="block" class="edit-profile-btn" (click)="openEditModal()">
+        Edit Profile Info
+      </ion-button>
+
+      <!-- Edit Modal -->
+      <ion-modal [isOpen]="isEditModalOpen" (didDismiss)="closeEditModal()" class="edit-profile-modal">
+        <ng-template>
+          <ion-header class="modal-header">
+            <ion-toolbar>
+              <ion-title>Edit Profile</ion-title>
+              <ion-buttons slot="end">
+                <ion-button fill="clear" (click)="closeEditModal()">
+                  <ion-icon name="close-outline"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+
+          <ion-content class="modal-content">
+            <ion-item>
+              <ion-label position="stacked">Username</ion-label>
+              <ion-input [(ngModel)]="editValues.username" placeholder="Enter name"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Phone</ion-label>
+              <!-- Removed maxlength and changed placeholder -->
+              <ion-input 
+                type="tel" 
+                [(ngModel)]="editValues.phone" 
+                placeholder="Enter number in +63XXXXXXXXXX format">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Address</ion-label>
+              <ion-input [(ngModel)]="editValues.address" placeholder="Enter your address"></ion-input>
+            </ion-item>
+
+            <!-- Change Password Section -->
+            <ion-button fill="clear" class="change-password-btn" (click)="showPasswordFields = !showPasswordFields">
+              Change Password
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-button>
+
+            <ng-container *ngIf="showPasswordFields">
+              <ion-item>
+                <ion-label position="stacked">Current Password</ion-label>
+                <ion-input [type]="showCurrentPassword ? 'text' : 'password'" [(ngModel)]="editValues.currentPassword"></ion-input>
+                <ion-icon [name]="showCurrentPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePassword('current')"></ion-icon>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">New Password</ion-label>
+                <ion-input [type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="editValues.password"></ion-input>
+                <ion-icon [name]="showNewPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePassword('new')"></ion-icon>
+              </ion-item>
+            </ng-container>
+
+            <div class="modal-buttons">
+              <ion-button expand="block" class="save-btn" (click)="saveAllEdits()">Save Changes</ion-button>
+              <ion-button expand="block" class="cancel-btn" (click)="closeEditModal()">Cancel</ion-button>
+            </div>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <!-- Logout Button -->
+      <button class="logout-button" (click)="logout()">Log Out</button>
+    </div>
+  </ng-container>
+
+  <!-- No user -->
+  <div class="no-user" *ngIf="!loading && !user">
+    <ion-icon name="alert-circle-outline" size="large"></ion-icon>
+    <p>No user is logged in</p>
+    <ion-button expand="block" color="primary" (click)="navCtrl.navigateRoot('/login')">
+      Go to Login
+    </ion-button>
+  </div>
+</ion-content>

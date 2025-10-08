@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true" class="contacts-content">
+  <!-- Header -->
+  <div class="header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <h1>Emergency Contacts</h1>
+    <ion-button fill="clear" class="add-button" (click)="addContact()">
+      <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading contacts...</p>
+  </div>
+
+  <!-- Contact List -->
+  <ng-container *ngIf="!loading && contacts?.length">
+    <div class="contacts-list">
+      <div
+        class="contact-item"
+        *ngFor="let contact of contacts"
+        (click)="viewContact(contact)"
+      >
+        <ion-icon name="person-circle-outline" class="contact-avatar"></ion-icon>
+        <span class="contact-name">{{ contact.name }}</span>
+        <ion-icon
+          name="chevron-forward-outline"
+          class="contact-chevron"
+        ></ion-icon>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- No contacts -->
+  <div class="no-contacts" *ngIf="!loading && !contacts?.length">
+    <ion-icon name="alert-circle-outline" size="large"></ion-icon>
+    <p>No contacts found</p>
+  </div>
+</ion-content>

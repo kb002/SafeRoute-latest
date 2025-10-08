@@ -1,0 +1,56 @@
+.landing-content {
+  --background: #1B3333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Made Tommy', sans-serif;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+
+  .logo-container {
+    margin-top: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .logo {
+      width: 100%;
+      height: auto;
+    }
+
+    h1 {
+      color: #E1A96C;
+      font-weight: 700;
+      // scales between 1.25rem (~20px) and 1.75rem (~28px)
+      font-size: clamp(1.25rem, 4vw, 1.75rem);
+      margin-top: -10px;
+    }
+  }
+
+  .button-container {
+    margin-top: 250px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+
+    .primary-btn {
+      --background: #E1A96C;
+      --background-activated: #d4945e;
+      --background-focused: #d4945e;
+      --color: #1B3333;
+      --color-activated: #1B3333;
+      --color-focused: #1B3333;
+
+      --border-radius: 12px;
+      font-weight: 500;
+      // scales between 0.9rem (~14px) and 1.1rem (~17px)
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      width: 180px;
+      min-height: 44px;
+      text-transform: none;
+      letter-spacing: normal;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+    }
+  }
+}

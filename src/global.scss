@@ -1,0 +1,106 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+@import "~leaflet/dist/leaflet.css";
+
+
+/* Custom Dropdown Styling - Global */
+ion-popover {
+  --background: #1B3333;
+}
+
+ion-select-popover ion-item {
+  --color: #E6DDCC;
+  --background: #1B3333;
+  font-family: 'Made Tommy', sans-serif !important;
+}
+
+//Buttons
+.primary-btn {
+  /* Background (gold) from variables.scss */
+  --background: var(--ion-color-secondary);
+  --background-activated: var(--ion-color-secondary-shade);
+  --background-focused: var(--ion-color-secondary-shade);
+
+  /* Text (dark green) from variables.scss */
+  --color: var(--ion-color-primary);
+  --color-activated: var(--ion-color-primary);
+  --color-focused: var(--ion-color-primary);
+
+  /* Shape and typography */
+  --border-radius: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+  min-height: 44px;
+  text-transform: none;
+  letter-spacing: normal;
+
+  /* Shadow */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+  /* Flexible width (use auto unless you want fixed size) */
+  width: 180px;   // if you want consistent size: set to 180px
+}
+
+// Back Button
+ion-button.back-text-btn {
+  --background: transparent;
+  --box-shadow: none;
+  --ripple-color: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --border-radius: 0;
+
+  color: #E6DDCC; 
+  font-weight: 500;
+  font-size: 1.2rem;
+  text-transform: none; 
+  letter-spacing: normal;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  ion-icon {
+    font-size: 1.2rem;
+    margin-right: 4px;
+    opacity: 0.75;
+  }
+}
+
+// Toast
+ion-toast {
+  top: 50px !important;
+}

@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true" class="map-content">
+  <!-- Header -->
+  <div class="header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <h1>Map</h1>
+  </div>
+
+  <!-- Map container -->
+  <div id="map"></div>
+
+  <!-- ✅ Legend -->
+  <div class="legend">
+    <h4>Risk Levels</h4>
+    <div class="legend-item">
+      <span class="color-box low"></span> Low Risk
+    </div>
+    <div class="legend-item">
+      <span class="color-box medium"></span> Medium Risk
+    </div>
+    <div class="legend-item">
+      <span class="color-box high"></span> High Risk
+    </div>
+  </div>
+</ion-content>
+
+<!-- Bottom navigation -->
+<app-bottom-nav></app-bottom-nav>

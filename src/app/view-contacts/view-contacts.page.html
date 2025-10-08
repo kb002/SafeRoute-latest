@@ -1,0 +1,108 @@
+<ion-content class="view-contact-content">
+  <!-- Header -->
+  <div class="header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <h1>Contact Details</h1>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading contact...</p>
+  </div>
+
+  <!-- Contact Details -->
+  <div class="contact-details" *ngIf="!loading && contact">
+    <ion-icon name="person-circle-outline" class="contact-avatar"></ion-icon>
+    <h2 class="contact-name">{{ contact.name }}</h2>
+
+    <div class="info-box">
+      <div class="info-text">
+        <label>Email</label>
+        <p>{{ contact.email }}</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-text">
+        <label>Relationship</label>
+        <p>{{ contact.relationship }}</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button expand="block" class="edit-btn" (click)="editContact()">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Edit
+      </ion-button>
+      <ion-button expand="block" class="delete-btn" (click)="confirmDelete()">
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Delete
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Not Found -->
+  <div class="no-contact" *ngIf="!loading && !contact">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>Contact not found</p>
+  </div>
+
+  <!-- Edit Modal -->
+  <ion-modal
+    [isOpen]="isEditModalOpen"
+    (didDismiss)="cancelEdit()"
+    class="edit-profile-modal"
+  >
+    <ng-template>
+      <ion-header class="modal-header">
+        <ion-toolbar>
+          <ion-title>Edit Contact</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancelEdit()">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="modal-content">
+        <ion-item>
+          <ion-label position="stacked">Name</ion-label>
+          <ion-input [(ngModel)]="editData.name"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input
+            type="email"
+            [(ngModel)]="editData.email"
+            placeholder="example@email.com"
+          ></ion-input>
+        </ion-item>
+
+        <!-- Dropdown -->
+        <ion-item>
+          <ion-label position="stacked">Relationship</ion-label>
+          <ion-select [(ngModel)]="editData.relationship" interface="popover">
+            <ion-select-option
+              *ngFor="let rel of relationshipOptions"
+              [value]="rel"
+            >
+              {{ rel }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div class="modal-buttons">
+          <ion-button class="save-btn" (click)="saveEdit()">Save</ion-button>
+          <ion-button class="cancel-btn" (click)="cancelEdit()">Cancel</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

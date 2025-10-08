@@ -1,0 +1,241 @@
+.view-contact-content {
+  --background: #1B3333;
+  font-family: 'Made Tommy', sans-serif;
+
+  /* Header */
+  .header {
+    background-color: #1C2727;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(10px, 3vw, 15px) clamp(12px, 4vw, 16px);
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    ion-button {
+      color: #E6DDCC;
+      margin-top: 20px;
+
+      ion-icon {
+        font-size: clamp(1.2rem, 4vw, 1.6rem);
+      }
+    }
+
+    h1 {
+      margin: 0;
+      margin-top: 20px;
+      color: #E6DDCC;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      font-weight: 400;
+    }
+  }
+
+  /* Loading + No Contact */
+  .loading,
+  .no-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: clamp(40px, 10vw, 60px);
+    color: #E6DDCC;
+
+    ion-spinner {
+      margin-bottom: 12px;
+    }
+
+    ion-icon {
+      font-size: clamp(2rem, 6vw, 2.5rem);
+      color: #E1A96C;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      font-weight: 300;
+    }
+  }
+
+  /* Contact Details */
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: clamp(20px, 8vw, 40px);
+
+    .contact-avatar {
+      font-size: clamp(4rem, 14vw, 6rem);
+      color: #E1A96C;
+      margin-bottom: 16px;
+    }
+
+    .contact-name {
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
+      font-weight: 500;
+      color: #E6DDCC;
+      margin-bottom: clamp(20px, 6vw, 30px);
+    }
+
+    .info-box {
+      background: rgba(235, 240, 233, 0.2);
+      border-radius: 12px;
+      padding: clamp(12px, 3vw, 16px) clamp(14px, 4vw, 20px);
+      width: 90%;
+      max-width: 400px;
+      margin-bottom: clamp(12px, 3vw, 16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.4),
+                  inset -3px -3px 6px rgba(255, 255, 255, 0.05);
+
+      .info-text {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          color: #E1A96C;
+          font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+          margin-bottom: 4px;
+        }
+
+        p {
+          color: #E6DDCC;
+          font-size: clamp(1rem, 3vw, 1.1rem);
+          margin: 0;
+        }
+      }
+    }
+
+    .action-buttons {
+      margin-top: clamp(16px, 6vw, 24px);
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: clamp(8px, 3vw, 12px);
+
+      ion-button {
+        flex: 1;
+        font-family: 'Made Tommy', sans-serif;
+        font-weight: 500;
+        --border-radius: 12px;
+        height: clamp(36px, 8vw, 44px);
+        font-size: clamp(0.9rem, 3vw, 1rem);
+      }
+
+      .edit-btn {
+        --background: #E1A96C;
+        --color: #1B3333;
+        text-transform: none; 
+        &::part(native) {
+          border-radius: 12px;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      .delete-btn {
+        --background: #1C2727;
+        --color: #E6DDCC;
+        text-transform: none; 
+        &::part(native) {
+          border-radius: 12px;
+          box-shadow: 0 0 5px rgba(220, 159, 74, 0.6);
+        }
+      }
+    }
+  }
+}
+
+/* Modal styling */
+.edit-profile-modal {
+  font-family: 'Made Tommy', sans-serif;
+
+  ion-toolbar {
+    --background: #1C2727;   
+    --color: #E6DDCC;   
+  }
+
+  .modal-header {
+    background-color: #1C2727;
+    color: #E6DDCC;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    padding: clamp(10px, 3vw, 15px);
+
+    ion-title {
+      font-weight: 400;
+      margin-top: 20px;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: #E6DDCC;
+    }
+
+    ion-button {
+      margin-top: 20px;
+      color: #E1A96C;
+
+      ion-icon {
+        font-size: clamp(1.2rem, 4vw, 1.6rem);
+        color: #E6DDCC;
+      }
+    }
+  }
+
+  .modal-content {
+    --background: #1B3333;
+    padding: clamp(15px, 4vw, 20px);
+
+    ion-item {
+      margin-top: clamp(12px, 4vw, 20px);
+      --background: transparent;
+      --color: #E6DDCC;
+      --border-color: rgba(225, 169, 108, 0.5);
+      border-radius: 12px;
+      margin-bottom: clamp(10px, 3vw, 15px);
+      
+      ion-label {
+        color: #E1A96C;
+        font-weight: 300;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+      }
+
+      ion-input {
+        color: #E6DDCC;
+        font-weight: 300;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+      }
+    }
+
+    .modal-buttons {
+      margin-top: clamp(16px, 6vw, 25px);
+      display: flex;
+      gap: clamp(12px, 4vw, 20px);
+      justify-content: center;
+
+      .save-btn,
+      .cancel-btn {
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        width: clamp(120px, 30vw, 150px);
+        height: clamp(32px, 7vw, 40px);
+      }
+
+      .save-btn {
+        --background: #E1A96C;
+        --color: #1C2727;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        text-transform: none; 
+      }
+
+      .cancel-btn {
+        --background: #1C2727;
+        --color: #E6DDCC;
+        box-shadow: 0 0 5px rgba(220, 159, 74, 0.6);
+        text-transform: none; 
+      }
+    }
+  }
+}

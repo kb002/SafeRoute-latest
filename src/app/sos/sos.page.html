@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true" class="emergency-content">
+  <div class="header">
+    <!-- Profile button -->
+    <ion-button fill="clear" class="profile-button" (click)="goToProfile()">
+      <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+    </ion-button>
+
+    <!-- Username -->
+    <h1>{{ username }}</h1>
+  </div>
+
+  <div class="emergency-message">
+    <h2>Are You in Emergency?</h2>
+    <p>Triple click the button to send emergency message and location to contacts</p>
+  </div>
+
+  <div class="sos-button-container">
+    <button class="sos-button" (click)="handleSosClick()">SOS</button>
+  </div>
+
+  <div class="contact-list">
+    <div class="view-contacts-row" (click)="goToContacts()">
+      <div class="icon-box">
+        <ion-icon name="people"></ion-icon>
+      </div>
+      <span class="row-text">View Emergency Contacts List</span>
+      <ion-icon name="chevron-forward-outline" class="next-icon"></ion-icon>
+    </div>
+  </div>
+</ion-content>
+
+<app-bottom-nav></app-bottom-nav>

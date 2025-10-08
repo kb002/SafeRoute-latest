@@ -1,0 +1,170 @@
+.emergency-content {
+  --background: #1B3333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Made Tommy', sans-serif;
+  text-align: center;
+  padding: 1rem;
+
+  /* Header */
+  .header {
+    background-color: #1C2727;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+    padding: 12px;
+    width: 100%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+
+    .profile-button {
+      margin-right: 8px;
+      margin-top: 20px;
+
+      ion-icon {
+        font-size: clamp(2.2rem, 6vw, 3rem);
+        color: #E1A96C;
+      }
+    }
+
+    h1 {
+      margin: 0;
+      margin-top: 20px;
+      color: #E6DDCC;
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      font-weight: 300;
+    }
+  }
+
+  /* Emergency message */
+  .emergency-message {
+    margin-top: 100px;
+
+    h2 {
+      color: #E6DDCC;
+      font-size: clamp(1.25rem, 5vw, 1.4rem);
+    }
+
+    p {
+      margin-top: 24px;
+      color: rgba(230, 221, 204, 0.6);
+      font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+      font-weight: 300;
+    }
+  }
+
+  /* SOS button */
+  .sos-button-container {
+    position: relative;
+    margin-top: 60px;
+
+    .sos-button {
+      position: relative;
+      z-index: 2;
+      background-color: #1C2727;
+      color: #E6DDCC;
+      border-radius: 50%;
+      width: clamp(140px, 40vw, 170px);
+      height: clamp(140px, 40vw, 170px);
+      font-size: clamp(1.8rem, 6vw, 2.2rem);
+      font-weight: bold;
+      border: none;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(180px, 48vw, 210px);
+      height: clamp(180px, 48vw, 210px);
+      border-radius: 50%;
+      background-color: rgba(27, 51, 51, 0.7);
+      filter: blur(0.5px);
+      z-index: 1;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(220px, 56vw, 250px);
+      height: clamp(220px, 56vw, 250px);
+      border-radius: 50%;
+      background-color: #518583;
+      filter: blur(1px);
+      z-index: 0;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  /* Contacts list */
+  .contact-list {
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .view-contacts-row {
+      background-color: #E1A96C;
+      color: #1B3333;
+      border-radius: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: clamp(280px, 80vw, 320px);
+      height: clamp(70px, 18vw, 80px);
+      padding: 10px 14px;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+
+      .icon-box {
+        background-color: #1B3333;
+        border-radius: 12px;
+        width: clamp(60px, 8vw, 66px);
+        height: clamp(60px, 8vw, 66px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        margin-left: -4px;
+        opacity: 0.9;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+
+        ion-icon {
+          color: #E1A96C;
+          font-size: clamp(1.8rem, 6vw, 2.2rem);
+        }
+      }
+
+      .row-text {
+        flex: 1;
+        text-align: left;
+        font-size: clamp(1rem, 3.5vw, 1.1rem);
+        color: #1B3333;
+        font-weight: 300;
+        opacity: 0.85;
+      }
+
+      .next-icon {
+        font-size: clamp(1.4rem, 5vw, 1.6rem);
+        color: #1B3333;
+        margin-left: 6px;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+
+.sos-loading {
+  --spinner-color: #e53935; // red but centered
+  text-align: center;
+}

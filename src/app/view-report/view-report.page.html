@@ -1,0 +1,86 @@
+<ion-content class="view-report-content">
+  <!-- Header -->
+  <div class="header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+    </ion-button>
+    <h1>Report Details</h1>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading report...</p>
+  </div>
+
+  <!-- No Report Found -->
+  <div class="no-report" *ngIf="!loading && !report">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>Report not found</p>
+  </div>
+
+  <!-- Report Details -->
+  <div class="report-details" *ngIf="!loading && report">
+    <ion-icon name="document-text-outline" class="report-icon"></ion-icon>
+    <h2 class="report-category">{{ report.category }}</h2>
+
+    <p class="date" *ngIf="report.datetime">
+      {{ report.datetime | date: 'mediumDate' }} • {{ report.datetime | date: 'shortTime' }}
+    </p>
+
+    <div class="info-box" *ngIf="report.barangay">
+      <div class="info-text">
+        <label>Barangay</label>
+        <p>{{ report.barangay }}</p>
+      </div>
+    </div>
+
+    <div class="info-box" *ngIf="report.landmark">
+      <div class="info-text">
+        <label>Landmark</label>
+        <p>{{ report.landmark }}</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <div class="info-text">
+        <label>Description</label>
+        <p>{{ report.description || 'No description provided.' }}</p>
+      </div>
+    </div>
+
+    <div class="info-box" *ngIf="report.status">
+      <div class="info-text">
+        <label>Status</label>
+        <p class="status" [ngClass]="report.status">{{ report.status }}</p>
+      </div>
+    </div>
+
+    <div class="info-box image-box" *ngIf="report.imageUrl">
+      <div class="info-text">
+        <label>Attached Image</label>
+        <img [src]="report.imageUrl" alt="Report Image" class="report-image" />
+      </div>
+    </div>
+
+    <div class="notice" *ngIf="report.status !== 'pending'">
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <p>
+        This report has already been {{ report.status }} and can no longer be edited or deleted.
+      </p>
+    </div>
+
+    <div class="action-buttons">
+      <ion-button expand="block" class="edit-btn" (click)="handleEditClick()" [disabled]="report.status !== 'pending'">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Edit
+      </ion-button>
+
+      <ion-button expand="block" class="delete-btn" (click)="handleDeleteClick()" [disabled]="report.status !== 'pending'">
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Delete
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

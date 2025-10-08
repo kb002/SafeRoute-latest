@@ -1,0 +1,67 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="back-button">
+    <ion-button class="back-text-btn" [routerLink]="['/landing']" fill="clear">
+      <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+      Back
+    </ion-button>
+  </div>
+
+  <div class="welcome-message">
+    <h1>Welcome Back</h1>
+  </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="input-container">
+
+    <!-- Email -->
+    <div class="input-box">
+      <ion-icon class="input-icon" name="mail"></ion-icon>
+      <ion-input
+        placeholder="Email"
+        type="email"
+        formControlName="email">
+      </ion-input>
+    </div>
+    <div class="error-message" *ngIf="email?.touched && email?.invalid">
+      <small *ngIf="email?.errors?.['required']">Email is required.</small>
+      <small *ngIf="email?.errors?.['email']">Enter a valid email.</small>
+    </div>
+
+    <!-- Password with toggle eye -->
+    <div class="input-box password-box">
+      <ion-icon class="input-icon" name="lock-closed"></ion-icon>
+      <ion-input
+        placeholder="Password"
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password">
+      </ion-input>
+      <ion-icon
+        class="eye-icon"
+        [name]="showPassword ? 'eye-off' : 'eye'"
+        (click)="togglePassword()">
+      </ion-icon>
+    </div>
+    <div class="error-message" *ngIf="password?.touched && password?.invalid">
+      <small *ngIf="password?.errors?.['required']">Password is required.</small>
+      <small *ngIf="password?.errors?.['minlength']">
+        Password must be at least 6 characters.
+      </small>
+    </div>
+
+    <!-- Forgot password -->
+    <div class="forgot-password">
+      <a [routerLink]="['/forgot-password']">Forgot password?</a>
+    </div>
+
+    <!-- Login button -->
+    <div class="button-container">
+      <ion-button class="primary-btn" expand="block" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Logging in...' : 'Log In' }}
+      </ion-button>
+    </div>
+
+  </form>
+
+  <div class="signup-prompt">
+    <p>Don't have an account? <a [routerLink]="['/signup']">Sign Up</a></p>
+  </div>
+</ion-content>
