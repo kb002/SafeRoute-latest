@@ -4,7 +4,7 @@
     <h1>
       <ion-button fill="clear" class="back-text-btn" (click)="goBack()">
         <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
-          Back
+        Back
       </ion-button>
     </h1>
   </div>
@@ -66,25 +66,51 @@
           </ion-header>
 
           <ion-content class="modal-content">
+            <!-- USERNAME -->
             <ion-item>
               <ion-label position="stacked">Username</ion-label>
-              <ion-input [(ngModel)]="editValues.username" placeholder="Enter name"></ion-input>
+              <ion-input
+                [(ngModel)]="editValues.username"
+                placeholder="Enter username"
+                (ionInput)="validateUsername()"
+                maxlength="20"
+              ></ion-input>
             </ion-item>
+            <div class="error-message" *ngIf="errors.username">
+              <small>{{ errors.username }}</small>
+            </div>
 
+            <!-- PHONE -->
             <ion-item>
-              <ion-label position="stacked">Phone</ion-label>
-              <!-- Removed maxlength and changed placeholder -->
-              <ion-input 
-                type="tel" 
-                [(ngModel)]="editValues.phone" 
-                placeholder="Enter number in +63XXXXXXXXXX format">
-              </ion-input>
+              <ion-label position="stacked">Phone Number</ion-label>
+              <div class="phone-input-group">
+                <span class="country-code">+63</span>
+                <ion-input
+                  type="tel"
+                  [(ngModel)]="editValues.phone"
+                  maxlength="10"
+                  placeholder="9xxxxxxxxx"
+                  required>
+                </ion-input>
+              </div>
             </ion-item>
+            <div class="error-message" *ngIf="errors.phone">
+              <small>{{ errors.phone }}</small>
+            </div>
 
+            <!-- ADDRESS -->
             <ion-item>
               <ion-label position="stacked">Address</ion-label>
-              <ion-input [(ngModel)]="editValues.address" placeholder="Enter your address"></ion-input>
+              <ion-input
+                [(ngModel)]="editValues.address"
+                placeholder="Enter your address"
+                (ionInput)="validateAddress()"
+                maxlength="100"
+              ></ion-input>
             </ion-item>
+            <div class="error-message" *ngIf="errors.address">
+              <small>{{ errors.address }}</small>
+            </div>
 
             <!-- Change Password Section -->
             <ion-button fill="clear" class="change-password-btn" (click)="showPasswordFields = !showPasswordFields">
@@ -93,17 +119,43 @@
             </ion-button>
 
             <ng-container *ngIf="showPasswordFields">
+              <!-- CURRENT PASSWORD -->
               <ion-item>
                 <ion-label position="stacked">Current Password</ion-label>
-                <ion-input [type]="showCurrentPassword ? 'text' : 'password'" [(ngModel)]="editValues.currentPassword"></ion-input>
-                <ion-icon [name]="showCurrentPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePassword('current')"></ion-icon>
+                <ion-input
+                  [type]="showCurrentPassword ? 'text' : 'password'"
+                  [(ngModel)]="editValues.currentPassword"
+                  placeholder="Enter current password"
+                  (ionInput)="validateCurrentPassword()"
+                ></ion-input>
+                <ion-icon
+                  [name]="showCurrentPassword ? 'eye-off' : 'eye'"
+                  slot="end"
+                  (click)="togglePassword('current')"
+                ></ion-icon>
               </ion-item>
+              <div class="error-message" *ngIf="errors.currentPassword">
+                <small>{{ errors.currentPassword }}</small>
+              </div>
 
+              <!-- NEW PASSWORD -->
               <ion-item>
                 <ion-label position="stacked">New Password</ion-label>
-                <ion-input [type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="editValues.password"></ion-input>
-                <ion-icon [name]="showNewPassword ? 'eye-off' : 'eye'" slot="end" (click)="togglePassword('new')"></ion-icon>
+                <ion-input
+                  [type]="showNewPassword ? 'text' : 'password'"
+                  [(ngModel)]="editValues.password"
+                  placeholder="Enter new password"
+                  (ionInput)="validateNewPassword()"
+                ></ion-input>
+                <ion-icon
+                  [name]="showNewPassword ? 'eye-off' : 'eye'"
+                  slot="end"
+                  (click)="togglePassword('new')"
+                ></ion-icon>
               </ion-item>
+              <div class="error-message" *ngIf="errors.password">
+                <small>{{ errors.password }}</small>
+              </div>
             </ng-container>
 
             <div class="modal-buttons">

@@ -1,17 +1,14 @@
 <ion-content [fullscreen]="true" class="emergency-content">
   <div class="header">
-    <!-- Profile button -->
     <ion-button fill="clear" class="profile-button" (click)="goToProfile()">
       <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
     </ion-button>
-
-    <!-- Username -->
     <h1>{{ username }}</h1>
   </div>
 
   <div class="emergency-message">
     <h2>Are You in Emergency?</h2>
-    <p>Triple click the button to send emergency message and location to contacts</p>
+    <p>Triple tap the button to automatically call your emergency contact.</p>
   </div>
 
   <div class="sos-button-container">

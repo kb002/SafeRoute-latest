@@ -17,22 +17,30 @@
     <!-- Username -->
     <div class="input-box">
       <ion-icon class="input-icon" name="person"></ion-icon>
-      <ion-input placeholder="Username" formControlName="username"></ion-input>
+      <ion-input
+        placeholder="Username"
+        formControlName="username"
+        maxlength="20">
+      </ion-input>
     </div>
-    <div class="errors" *ngIf="username?.touched && username?.invalid">
+    <div class="error-message" *ngIf="username?.touched && username?.invalid">
       <small *ngIf="username?.errors?.['required']">Username is required.</small>
       <small *ngIf="username?.errors?.['minlength']">At least 3 characters.</small>
-      <small *ngIf="username?.errors?.['pattern']">Letters, numbers, _ and spaces only.</small>
+      <small *ngIf="username?.errors?.['maxlength']">Maximum of 20 characters.</small>
+      <small *ngIf="username?.errors?.['pattern']">Letters, numbers, underscores, and spaces only.</small>
+      <small *ngIf="username?.errors?.['noConsecutiveSpaces']">No consecutive spaces allowed.</small>
+      <small *ngIf="username?.errors?.['noLeadingTrailingSpaces']">Cannot start or end with a space.</small>
     </div>
 
     <!-- Email -->
     <div class="input-box">
       <ion-icon class="input-icon" name="mail"></ion-icon>
-      <ion-input placeholder="Email" type="email" formControlName="email"></ion-input>
+      <ion-input placeholder="Email" type="email" formControlName="email" maxlength="50"></ion-input>
     </div>
-    <div class="errors" *ngIf="email?.touched && email?.invalid">
+    <div class="error-message" *ngIf="email?.touched && email?.invalid">
       <small *ngIf="email?.errors?.['required']">Email is required.</small>
       <small *ngIf="email?.errors?.['email']">Enter a valid email.</small>
+      <small *ngIf="email?.errors?.['maxlength']">Email must not exceed 50 characters.</small>
     </div>
 
     <!-- Phone -->
@@ -40,14 +48,14 @@
       <ion-icon class="input-icon" name="call"></ion-icon>
       <span class="phone-prefix">+63</span>
       <ion-input
-        placeholder="xxxxxxxxxx"
+        placeholder="9xxxxxxxxx"
         type="tel"
         maxlength="10"
         formControlName="phone"
         (ionInput)="numbersOnly($event)">
       </ion-input>
     </div>
-    <div class="errors" *ngIf="phone?.touched && phone?.invalid">
+    <div class="error-message" *ngIf="phone?.touched && phone?.invalid">
       <small *ngIf="phone?.errors?.['required']">Phone number is required.</small>
       <small *ngIf="phone?.errors?.['pattern']">Enter a valid phone number.</small>
     </div>
@@ -57,8 +65,10 @@
       <ion-icon class="input-icon" name="location"></ion-icon>
       <ion-input placeholder="Address" formControlName="address"></ion-input>
     </div>
-    <div class="errors" *ngIf="address?.touched && address?.invalid">
+    <div class="error-message" *ngIf="address?.touched && address?.invalid">
       <small *ngIf="address?.errors?.['required']">Address is required.</small>
+      <small *ngIf="address?.errors?.['minlength']">At least 5 characters.</small>
+      <small *ngIf="address?.errors?.['maxlength']">Maximum of 100 characters.</small>
     </div>
 
     <!-- Password -->
@@ -75,9 +85,10 @@
         (click)="togglePassword()">
       </ion-icon>
     </div>
-    <div class="errors" *ngIf="password?.touched && password?.invalid">
+    <div class="error-message" *ngIf="password?.touched && password?.invalid">
       <small *ngIf="password?.errors?.['required']">Password is required.</small>
       <small *ngIf="password?.errors?.['minlength']">At least 6 characters.</small>
+      <small *ngIf="password?.errors?.['maxlength']">Maximum of 20 characters.</small>
       <small *ngIf="password?.errors?.['pattern']">Include at least 1 letter and 1 number.</small>
     </div>
 
@@ -95,7 +106,7 @@
         (click)="toggleConfirmPassword()">
       </ion-icon>
     </div>
-    <div class="errors" *ngIf="confirmPassword?.touched && (confirmPassword?.invalid || signupForm?.errors?.['passwordMismatch'])">
+    <div class="error-message" *ngIf="confirmPassword?.touched && (confirmPassword?.invalid || signupForm?.errors?.['passwordMismatch'])">
       <small *ngIf="confirmPassword?.errors?.['required']">Please confirm your password.</small>
       <small *ngIf="signupForm?.errors?.['passwordMismatch']">Passwords do not match.</small>
     </div>
@@ -109,7 +120,7 @@
         <a [routerLink]="['/privacy']">Privacy Policy</a>
       </p>
     </div>
-    <div class="errors" *ngIf="acceptTerms?.touched && acceptTerms?.invalid">
+    <div class="error-message" *ngIf="acceptTerms?.touched && acceptTerms?.invalid">
       <small *ngIf="acceptTerms?.errors?.['requiredTrue']">You must accept the terms to continue.</small>
     </div>
 

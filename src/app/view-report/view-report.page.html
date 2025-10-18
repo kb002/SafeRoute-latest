@@ -72,12 +72,20 @@
     </div>
 
     <div class="action-buttons">
-      <ion-button expand="block" class="edit-btn" (click)="handleEditClick()" [disabled]="report.status !== 'pending'">
+      <ion-button
+        expand="block"
+        class="edit-btn"
+        (click)="handleEditClick()"
+        [disabled]="report.status !== 'pending'">
         <ion-icon slot="start" name="create-outline"></ion-icon>
         Edit
       </ion-button>
 
-      <ion-button expand="block" class="delete-btn" (click)="handleDeleteClick()" [disabled]="report.status !== 'pending'">
+      <ion-button
+        expand="block"
+        class="delete-btn"
+        (click)="handleDeleteClick()"
+        [disabled]="report.status !== 'pending'">
         <ion-icon slot="start" name="trash-outline"></ion-icon>
         Delete
       </ion-button>

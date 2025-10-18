@@ -10,19 +10,20 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { provideHttpClient } from '@angular/common/http'; 
+import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 
-// ✅ Import the Geolocation plugin
+
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 
-// ✅ Initialize Firebase app ONCE before Angular starts
+// Initialize Firebase app ONCE before Angular starts
 const firebaseApp = initializeApp(environment.firebaseConfig);
 
-// ✅ Initialize Auth with persistence BEFORE bootstrap
+// Initialize Auth with persistence BEFORE bootstrap
 const auth = initializeAuth(firebaseApp, {
   persistence: indexedDBLocalPersistence, // survives refresh
 });
 
-// ✅ Initialize Firestore once
+// Initialize Firestore once
 const db = getFirestore(firebaseApp);
 
 bootstrapApplication(AppComponent, {
@@ -36,7 +37,9 @@ bootstrapApplication(AppComponent, {
     provideFirestore(() => db),
     provideHttpClient(),
 
-    // ✅ Add Geolocation here so Angular knows how to inject it
+    
     Geolocation,
+
+    CallNumber
   ],
 });

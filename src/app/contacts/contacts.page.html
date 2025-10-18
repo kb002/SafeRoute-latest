@@ -4,39 +4,101 @@
     <ion-button fill="clear" class="back-button" (click)="goBack()">
       <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
     </ion-button>
+
     <h1>Emergency Contacts</h1>
-    <ion-button fill="clear" class="add-button" (click)="addContact()">
+
+    <!-- Keep add button space stable -->
+    <ion-button
+      fill="clear"
+      class="add-button"
+      [hidden]="activeTab !== 'contacts'"
+      (click)="addContact()"
+    >
       <ion-icon slot="icon-only" name="add-outline"></ion-icon>
     </ion-button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="contacts-tabs">
+    <div
+      class="tab"
+      [class.active]="activeTab === 'contacts'"
+      (click)="switchTab('contacts')"
+    >
+      Your Contacts ({{ contacts.length }})
+    </div>
+    <div
+      class="tab"
+      [class.active]="activeTab === 'hotlines'"
+      (click)="switchTab('hotlines')"
+    >
+      Official Hotlines ({{ adminHotlines.length }})
+    </div>
   </div>
 
   <!-- Loading -->
   <div class="loading" *ngIf="loading">
     <ion-spinner name="crescent"></ion-spinner>
-    <p>Loading contacts...</p>
+    <p>Loading data...</p>
   </div>
 
-  <!-- Contact List -->
-  <ng-container *ngIf="!loading && contacts?.length">
-    <div class="contacts-list">
-      <div
-        class="contact-item"
-        *ngFor="let contact of contacts"
-        (click)="viewContact(contact)"
-      >
-        <ion-icon name="person-circle-outline" class="contact-avatar"></ion-icon>
-        <span class="contact-name">{{ contact.name }}</span>
-        <ion-icon
-          name="chevron-forward-outline"
-          class="contact-chevron"
-        ></ion-icon>
+  <!-- -------------------- USER CONTACTS -------------------- -->
+  <ng-container *ngIf="!loading && activeTab === 'contacts'">
+    <div *ngIf="contacts.length; else noContacts">
+      <div class="contacts-list">
+        <div class="contact-item" *ngFor="let contact of contacts">
+          <div class="contact-info" (click)="viewContact(contact)">
+            <ion-icon
+              name="person-circle-outline"
+              class="contact-avatar"
+            ></ion-icon>
+            <span class="contact-name">{{ contact.name }}</span>
+          </div>
+          <ion-button
+            fill="clear"
+            class="call-button"
+            (click)="confirmCall(contact.phone, contact.name)"
+          >
+            <ion-icon name="call-outline"></ion-icon>
+          </ion-button>
+        </div>
       </div>
     </div>
+    <ng-template #noContacts>
+      <div class="no-contacts">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>No emergency contacts added yet</p>
+      </div>
+    </ng-template>
   </ng-container>
 
-  <!-- No contacts -->
-  <div class="no-contacts" *ngIf="!loading && !contacts?.length">
-    <ion-icon name="alert-circle-outline" size="large"></ion-icon>
-    <p>No contacts found</p>
-  </div>
+  <!-- -------------------- ADMIN HOTLINES -------------------- -->
+  <ng-container *ngIf="!loading && activeTab === 'hotlines'">
+    <div *ngIf="adminHotlines.length; else noHotlines">
+      <div class="contacts-list">
+        <div class="contact-item" *ngFor="let hotline of adminHotlines">
+          <div class="contact-info" (click)="viewHotline(hotline)">
+            <ion-icon
+              name="alert-circle-outline"
+              class="contact-avatar hotline-icon"
+            ></ion-icon>
+            <span class="contact-name">{{ hotline.name }}</span>
+          </div>
+          <ion-button
+            fill="clear"
+            class="call-button"
+            (click)="confirmCall(hotline.hotline, hotline.name)"
+          >
+            <ion-icon name="call-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+    <ng-template #noHotlines>
+      <div class="no-contacts">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>No official hotlines found</p>
+      </div>
+    </ng-template>
+  </ng-container>
 </ion-content>

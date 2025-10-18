@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
 
 interface Contact {
   name: string;
-  email: string;
+  phoneNumber: string;
   relationship: string;
   createdAt?: any;
 }
@@ -51,7 +51,9 @@ interface Contact {
   ]
 })
 export class AddContactPage {
-  newContact: Contact = { name: '', email: '', relationship: '' };
+  newContact: Contact = { name: '', phoneNumber: '', relationship: '' };
+  phoneDigits: string = '';
+  errorMessages = { name: '', phone: '', relationship: '' };
 
   relationshipOptions: string[] = [
     'Mother',
@@ -71,35 +73,82 @@ export class AddContactPage {
     private router: Router
   ) {}
 
+  ngOnInit() {
+    if (this.newContact.phoneNumber && this.newContact.phoneNumber.startsWith('+63')) {
+      this.phoneDigits = this.newContact.phoneNumber.replace(/^\+63/, '').slice(0, 10);
+    }
+  }
+
   goBack() {
     this.navCtrl.back();
   }
 
+  // Allow only numeric digits (0–9)
+  allowNumbersOnly(event: KeyboardEvent) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
+
+  // --- Real-time validation methods ---
+  validateName() {
+    const name = this.newContact.name?.trim() || '';
+    if (!name) {
+      this.errorMessages.name = 'Name is required.';
+    } else {
+      this.errorMessages.name = '';
+    }
+  }
+
+  validatePhone() {
+    const phone = this.newContact.phoneNumber;
+    const pattern = /^\+639\d{9}$/;
+
+    if (!phone) {
+      this.errorMessages.phone = 'Phone number is required.';
+    } else if (!pattern.test(phone)) {
+      this.errorMessages.phone = 'Invalid number. Use format +639XXXXXXXXX.';
+    } else {
+      this.errorMessages.phone = '';
+    }
+  }
+
+  validateRelationship() {
+    if (!this.newContact.relationship) {
+      this.errorMessages.relationship = 'Please select a relationship.';
+    } else {
+      this.errorMessages.relationship = '';
+    }
+  }
+
+  onPhoneInput(event: any) {
+    // Clean non-numeric input and keep only 10 digits
+    const raw = event?.detail?.value ?? event?.target?.value ?? this.phoneDigits ?? '';
+    const digits = String(raw).replace(/\D/g, '').slice(0, 10);
+    this.phoneDigits = digits;
+    this.newContact.phoneNumber = digits ? '+63' + digits : '';
+
+    // Trigger validation while typing
+    this.validatePhone();
+  }
+
   async saveContact() {
+    // Run all validations before saving
+    this.validateName();
+    this.validatePhone();
+    this.validateRelationship();
+
+    if (this.errorMessages.name || this.errorMessages.phone || this.errorMessages.relationship) return;
+
     const user = this.auth.currentUser;
     if (!user) {
       this.showToast('You must be logged in to add contacts', 'danger');
       return;
     }
 
-    const { name, email, relationship } = this.newContact;
-
-    if (!name || !email || !relationship) {
-      this.showToast('All fields are required', 'warning');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      this.showToast('Please enter a valid email address', 'warning');
-      return;
-    }
-
     try {
-      const contactsRef = collection(
-        this.firestore,
-        `users/${user.uid}/emergency_contacts`
-      );
+      const contactsRef = collection(this.firestore, `users/${user.uid}/emergency_contacts`);
       await addDoc(contactsRef, {
         ...this.newContact,
         createdAt: serverTimestamp()

@@ -4,55 +4,45 @@ import { FormsModule } from '@angular/forms';
 import {
   IonicModule,
   AlertController,
-  NavController,
-  LoadingController,
-  ToastController
+  ToastController,
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { BottomNavComponent } from '../components/bottom-nav/bottom-nav.component';
-import { Firestore, collection, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs, query, orderBy } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
-import { LocationService } from '../services/location.service';
+import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 
 @Component({
   selector: 'app-sos',
   templateUrl: './sos.page.html',
   styleUrls: ['./sos.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, BottomNavComponent]
+  imports: [IonicModule, CommonModule, FormsModule, BottomNavComponent],
+  providers: [CallNumber],
 })
 export class SosPage implements OnInit, OnDestroy {
   username = 'Guest';
   private sub?: Subscription;
-
   private clickCount = 0;
   private clickTimeout: any;
-
-  // ✅ EmailJS REST API credentials
-  private EMAILJS_SERVICE_ID = 'service_2a2ye9s';
-  private EMAILJS_TEMPLATE_ID = 'template_tvd3iv9';
-  private EMAILJS_PUBLIC_KEY = 'yivsGi1tzi_-4fiw8';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private navCtrl: NavController,
     private firestore: Firestore,
     private auth: Auth,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private locationService: LocationService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private callNumber: CallNumber
   ) {}
 
   ngOnInit() {
-    console.log('🚨 SOS Page initialized with EmailJS REST API');
     this.sub = this.authService.username$.subscribe({
       next: (name) => {
-        this.username = name && name.trim().length > 0 ? name : 'Guest';
-      }
+        this.username = name?.trim().length ? name : 'Guest';
+      },
     });
   }
 
@@ -64,11 +54,11 @@ export class SosPage implements OnInit, OnDestroy {
     this.router.navigate(['/profile']);
   }
 
-  async goToContacts() {
+  goToContacts() {
     this.router.navigate(['/contacts']);
   }
 
-  // ✅ Triple-click SOS trigger
+  // --- Handle triple-tap SOS button ---
   async handleSosClick() {
     this.clickCount++;
 
@@ -81,156 +71,102 @@ export class SosPage implements OnInit, OnDestroy {
     if (this.clickCount === 3) {
       clearTimeout(this.clickTimeout);
       this.clickCount = 0;
-
-      const toast = await this.toastCtrl.create({
-        message: '🚨 SOS triggered!',
-        duration: 1500,
-        color: 'danger',
-        position: 'middle',
-        cssClass: 'sos-toast'
-      });
-      await toast.present();
-
-      console.log('🚨 SOS button triple-click detected');
-      await this.checkEmergencyContacts();
+      console.log('Triple tap detected — showing contact options');
+      await this.callEmergencyContact();
     }
   }
 
-  // ✅ Check emergency contacts in Firestore
-  private async checkEmergencyContacts() {
-    console.log('👀 Checking emergency contacts...');
-
-    if (!this.auth.currentUser) {
-      console.warn('⚠️ No logged-in user found');
+  // --- Fetch and choose contact to call ---
+  private async callEmergencyContact() {
+    const user = this.auth.currentUser;
+    if (!user) {
       const alert = await this.alertCtrl.create({
         header: 'Not Logged In',
-        message: 'Please log in before triggering SOS.',
-        buttons: ['OK']
+        message: 'Please log in before using SOS.',
+        buttons: ['OK'],
       });
       await alert.present();
       return;
     }
 
-    const uid = this.auth.currentUser.uid;
+    const uid = user.uid;
     const contactsRef = collection(this.firestore, `users/${uid}/emergency_contacts`);
-    const snapshot = await getDocs(contactsRef);
+    const q = query(contactsRef, orderBy('createdAt', 'asc'));
+    const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
-      console.log('⚠️ No emergency contacts found');
       const alert = await this.alertCtrl.create({
-        header: 'No Contacts',
+        header: 'No Emergency Contacts',
         message: 'You need to add at least one emergency contact before using SOS.',
-        buttons: ['OK']
+        buttons: [
+          { text: 'Cancel', role: 'cancel' },
+          {
+            text: 'Add',
+            handler: () => this.router.navigate(['/add-contact']),
+          },
+        ],
       });
       await alert.present();
       return;
     }
 
-    const contacts = snapshot.docs.map(doc => doc.data());
-    console.log('📡 Found contacts:', contacts);
-    await this.sendSosToContacts(contacts);
+    const contacts = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as any[];
+
+    // --- If only one contact, call directly ---
+    if (contacts.length === 1) {
+      const singleContact = contacts[0];
+      const phone = String(singleContact.phoneNumber || '').replace(/\s+/g, '');
+      await this.makeCall(phone);
+      return;
+    }
+
+    // --- If multiple contacts, show selection alert ---
+    const alert = await this.alertCtrl.create({
+      header: 'Choose Emergency Contact',
+      message: 'Select the contact you want to call:',
+      buttons: [
+        ...contacts.map((c) => ({
+          text: `${c.name} (${c.relationship || 'Contact'})`,
+          handler: async () => {
+            const phone = String(c.phoneNumber || '').replace(/\s+/g, '');
+            await this.makeCall(phone);
+          },
+        })),
+        { text: 'Cancel', role: 'cancel' },
+      ],
+    });
+
+    await alert.present();
   }
 
-  // ✅ Send SOS email via EmailJS REST API (works on mobile)
-  private async sendSosToContacts(contacts: any[]) {
-    const loading = await this.loadingCtrl.create({
-      message: 'Sending SOS...',
-      spinner: 'crescent',
-      cssClass: 'sos-loading'
-    });
-    await loading.present();
-
-    try {
-      const location = await this.locationService.getCurrentLocation();
-
-      if (!location) {
-        await loading.dismiss();
-        const alert = await this.alertCtrl.create({
-          header: 'Location Error',
-          message: 'Unable to fetch your location. Please check location permissions.',
-          buttons: ['OK']
-        });
-        await alert.present();
-        return;
-      }
-
-      const mapsUrl = `https://www.google.com/maps?q=${location.lat},${location.lng}`;
-      const message = `🚨 SOS Alert from ${this.username}! I need help.\nMy current location: ${mapsUrl}`;
-
-      const sendPromises = contacts.map(async (contact) => {
-        const email = contact['email'];
-        if (!email) return;
-
-        console.log(`📤 Sending SOS email to ${email}...`);
-
-        const payload = {
-          service_id: this.EMAILJS_SERVICE_ID,
-          template_id: this.EMAILJS_TEMPLATE_ID,
-          user_id: this.EMAILJS_PUBLIC_KEY,
-          template_params: {
-            to_email: email,
-            from_name: this.username,
-            message: message
-          }
-        };
-
-        try {
-          const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          if (response.ok) {
-            console.log('✅ Email sent successfully to', email);
-            const successToast = await this.toastCtrl.create({
-              message: `✅ Sent to ${email}`,
-              duration: 1500,
-              color: 'success',
-              position: 'middle'
-            });
-            await successToast.present();
-          } else {
-            console.error('❌ Failed sending to', email, response.status);
-            const failToast = await this.toastCtrl.create({
-              message: `❌ Failed for ${email}`,
-              duration: 1500,
-              color: 'danger',
-              position: 'middle'
-            });
-            await failToast.present();
-          }
-        } catch (err) {
-          console.error('❌ Network or fetch error for', email, err);
-          const failToast = await this.toastCtrl.create({
-            message: `❌ Network error for ${email}`,
-            duration: 1500,
-            color: 'danger',
-            position: 'middle'
-          });
-          await failToast.present();
-        }
-      });
-
-      await Promise.all(sendPromises);
-      await loading.dismiss();
-
-      const doneAlert = await this.alertCtrl.create({
-        header: 'SOS Sent',
-        message: 'Emergency emails have been sent to your contacts.',
-        buttons: ['OK']
-      });
-      await doneAlert.present();
-
-    } catch (err) {
-      console.error('❌ SOS sending failed:', err);
-      await loading.dismiss();
+  // --- Make the phone call safely ---
+  private async makeCall(phone: string) {
+    if (!phone) {
       const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Failed to send SOS. Please check your internet connection.',
-        buttons: ['OK']
+        header: 'Invalid Contact',
+        message: 'This contact has no valid phone number.',
+        buttons: ['OK'],
       });
       await alert.present();
+      return;
+    }
+
+    console.log(`Attempting to call: ${phone}`);
+    try {
+      await this.callNumber.callNumber(phone, true);
+      console.log('Call initiated successfully');
+    } catch (error) {
+      console.error('Failed to call:', error);
+      const toast = await this.toastCtrl.create({
+        message: 'Failed to start call. Please check call permissions.',
+        duration: 2000,
+        color: 'danger',
+        position: 'middle',
+      });
+      await toast.present();
     }
   }
 }

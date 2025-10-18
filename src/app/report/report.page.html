@@ -23,6 +23,15 @@
     </ion-select>
   </ion-item>
 
+  <!-- Sort by Date/Time -->
+  <ion-item class="filter-item">
+    <ion-label position="stacked">Sort by Date & Time</ion-label>
+    <ion-select [(ngModel)]="selectedSort" placeholder="Select Order" interface="popover">
+      <ion-select-option value="desc">Newest First</ion-select-option>
+      <ion-select-option value="asc">Oldest First</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <!-- Loading Spinner -->
   <div class="loading" *ngIf="loading">
     <ion-spinner name="crescent"></ion-spinner>
@@ -30,16 +39,16 @@
   </div>
 
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="!loading && filteredReports.length === 0">
+  <div class="empty-state" *ngIf="!loading && filteredAndSortedReports.length === 0">
     <ion-icon name="document-text-outline" class="empty-icon"></ion-icon>
     <p>No incident reports yet</p>
   </div>
 
   <!-- Reports List -->
-  <div class="reports-list" *ngIf="!loading && filteredReports.length > 0">
+  <div class="reports-list" *ngIf="!loading && filteredAndSortedReports.length > 0">
     <div
       class="report-box"
-      *ngFor="let report of filteredReports"
+      *ngFor="let report of filteredAndSortedReports"
       (click)="viewReport(report.id)"
     >
       <ion-icon name="document-text-outline" class="report-icon"></ion-icon>

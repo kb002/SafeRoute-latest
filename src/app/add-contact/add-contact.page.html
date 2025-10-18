@@ -14,32 +14,51 @@
   <!-- Contact Name -->
   <ion-item>
     <ion-label position="stacked">Contact Name</ion-label>
-    <ion-input [(ngModel)]="newContact.name"></ion-input>
-  </ion-item>
-
-  <!-- Email -->
-  <ion-item>
-    <ion-label position="stacked">Email</ion-label>
     <ion-input
-      type="email"
-      [(ngModel)]="newContact.email"
-      placeholder="example@email.com"
+      [(ngModel)]="newContact.name"
+      name="name"
+      maxlength="20"
+      (ionInput)="validateName()"
+      maxlenght = "20"
     ></ion-input>
   </ion-item>
+  <p class="error-message" *ngIf="errorMessages.name">{{ errorMessages.name }}</p>
 
-  <!-- Relationship (Dropdown Select) -->
+  <!-- Phone Number (+63 prefix visual, user types the rest) -->
+  <ion-item>
+    <ion-label position="stacked">Phone Number</ion-label>
+    <div class="phone-input">
+      <span class="prefix">+63</span>
+      <ion-input
+        type="tel"
+        [(ngModel)]="phoneDigits"
+        name="phoneDigits"
+        maxlength="10"
+        inputmode="numeric"
+        placeholder="9XXXXXXXXX"
+        (ionInput)="onPhoneInput($event)"
+        (keypress)="allowNumbersOnly($event)"
+      ></ion-input>
+    </div>
+  </ion-item>
+  <p class="error-message" *ngIf="errorMessages.phone">{{ errorMessages.phone }}</p>
+
+  <!-- Relationship -->
   <ion-item>
     <ion-label position="stacked">Relationship</ion-label>
     <ion-select
       [(ngModel)]="newContact.relationship"
+      name="relationship"
       interface="popover"
       placeholder="Select Relationship"
+      (ionChange)="validateRelationship()"
     >
       <ion-select-option *ngFor="let rel of relationshipOptions" [value]="rel">
         {{ rel }}
       </ion-select-option>
     </ion-select>
   </ion-item>
+  <p class="error-message" *ngIf="errorMessages.relationship">{{ errorMessages.relationship }}</p>
 
   <!-- Buttons -->
   <div class="modal-buttons">

@@ -35,11 +35,20 @@ export class ForgotPasswordPage implements OnInit {
 
   ngOnInit() {
     this.forgotForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(50)
+        ]
+      ]
     });
   }
 
-  get email() { return this.forgotForm.get('email'); }
+  get email() {
+    return this.forgotForm.get('email');
+  }
 
   async showToast(message: string, color: string = 'danger') {
     const toast = await this.toastCtrl.create({
@@ -62,7 +71,7 @@ export class ForgotPasswordPage implements OnInit {
     try {
       const { email } = this.forgotForm.value;
 
-      //Directly try sending reset email
+      // Send password reset email
       await sendPasswordResetEmail(auth, email.trim());
       this.showToast('If this email is registered, a reset link has been sent.', 'success');
 

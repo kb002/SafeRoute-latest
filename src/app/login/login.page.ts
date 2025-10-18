@@ -37,8 +37,16 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20),
+          Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-={}[\]:;"'<>,.?/]{6,20}$/)
+        ]
+      ]
     });
   }
 
@@ -78,7 +86,7 @@ export class LoginPage implements OnInit {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // ✅ Check if email is verified
+      // Check if email is verified
       if (!user.emailVerified) {
         await this.showAlert('Email Not Verified', 'Your email is not verified. Please check your inbox.');
         this.isSubmitting = false;

@@ -21,20 +21,29 @@
 
     <div class="info-box">
       <div class="info-text">
-        <label>Email</label>
-        <p>{{ contact.email }}</p>
+        <label>{{ isHotline ? 'Hotline Number' : 'Phone Number' }}</label>
+        <p>{{ formatPhoneNumber(contact.phoneNumber) }}</p>
       </div>
     </div>
 
-    <div class="info-box">
+    <div class="info-box" *ngIf="!isHotline && contact.relationship">
       <div class="info-text">
         <label>Relationship</label>
         <p>{{ contact.relationship }}</p>
       </div>
     </div>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
+    <ion-button
+      expand="block"
+      class="call-now-btn"
+      *ngIf="contact.phoneNumber && contact.phoneNumber !== 'N/A'"
+      (click)="callNumber(contact.phoneNumber)"
+    >
+      <ion-icon slot="start" name="call-outline"></ion-icon>
+      Call Now
+    </ion-button>
+
+    <div class="action-buttons" *ngIf="!isHotline">
       <ion-button expand="block" class="edit-btn" (click)="editContact()">
         <ion-icon slot="start" name="create-outline"></ion-icon>
         Edit
@@ -46,7 +55,6 @@
     </div>
   </div>
 
-  <!-- Not Found -->
   <div class="no-contact" *ngIf="!loading && !contact">
     <ion-icon name="alert-circle-outline"></ion-icon>
     <p>Contact not found</p>
@@ -56,48 +64,69 @@
   <ion-modal
     [isOpen]="isEditModalOpen"
     (didDismiss)="cancelEdit()"
-    class="edit-profile-modal"
+    class="edit-contact-modal"
   >
     <ng-template>
       <ion-header class="modal-header">
         <ion-toolbar>
           <ion-title>Edit Contact</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="cancelEdit()">
+            <ion-button fill="clear" (click)="cancelEdit()">
               <ion-icon slot="icon-only" name="close-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
 
-      <ion-content class="modal-content">
+      <ion-content [forceOverscroll]="false" class="modal-content">
+        <!-- Name -->
         <ion-item>
           <ion-label position="stacked">Name</ion-label>
-          <ion-input [(ngModel)]="editData.name"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="stacked">Email</ion-label>
           <ion-input
-            type="email"
-            [(ngModel)]="editData.email"
-            placeholder="example@email.com"
+            [(ngModel)]="editData.name"
+            (ionInput)="validateName()"
+            placeholder="Enter name"
+            maxlenght = "20"
           ></ion-input>
         </ion-item>
+        <p class="error-message" *ngIf="errorMessages.name">{{ errorMessages.name }}</p>
 
-        <!-- Dropdown -->
+        <!-- Phone Number -->
+        <ion-item>
+          <ion-label position="stacked">Phone Number</ion-label>
+          <div class="phone-input">
+            <span class="prefix">+63</span>
+            <ion-input
+              type="tel"
+              maxlength="10"
+              [(ngModel)]="editData.phoneNumber"
+              inputmode="numeric"
+              placeholder="9XXXXXXXXX"
+              (ionInput)="onPhoneInput($event); validatePhone()"
+            ></ion-input>
+          </div>
+        </ion-item>
+        <p class="error-message" *ngIf="errorMessages.phone">{{ errorMessages.phone }}</p>
+
+        <!-- Relationship -->
         <ion-item>
           <ion-label position="stacked">Relationship</ion-label>
-          <ion-select [(ngModel)]="editData.relationship" interface="popover">
-            <ion-select-option
-              *ngFor="let rel of relationshipOptions"
-              [value]="rel"
-            >
+          <ion-select
+            [(ngModel)]="editData.relationship"
+            interface="popover"
+            placeholder="Select relationship"
+            (ionChange)="validateRelationship()"
+          >
+            <ion-select-option *ngFor="let rel of relationshipOptions" [value]="rel">
               {{ rel }}
             </ion-select-option>
           </ion-select>
         </ion-item>
+        <p class="error-message" *ngIf="errorMessages.relationship">
+          {{ errorMessages.relationship }}
+        </p>
 
+        <!-- Buttons -->
         <div class="modal-buttons">
           <ion-button class="save-btn" (click)="saveEdit()">Save</ion-button>
           <ion-button class="cancel-btn" (click)="cancelEdit()">Cancel</ion-button>

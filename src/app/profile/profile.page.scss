@@ -29,7 +29,7 @@
     margin-top: 20px;
 
     ion-icon {
-      font-size: 5rem; /* smaller for mobile */
+      font-size: 5rem;
       color: #E1A96C;
     }
   }
@@ -48,7 +48,7 @@
     border-radius: 12px;
     padding: 15px;
     margin: 20px auto 0;
-    width: 90%; /* more room on mobile */
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -105,6 +105,7 @@
   font-size: 0.95rem;
   margin: 12px auto 0;
   text-transform: none;
+
   &::part(native) {
     border-radius: 10px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
@@ -157,7 +158,7 @@ ion-content {
       --color: #E6DDCC;
       --border-color: rgba(225, 169, 108, 0.5);
       border-radius: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
 
       ion-label {
         color: #E1A96C;
@@ -171,6 +172,34 @@ ion-content {
         font-size: 0.95rem;
         font-weight: 300;
       }
+    }
+
+    /* 👇 +63 and input in one line */
+    .phone-input-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .country-code {
+        color: #E6DDCC;
+        font-size: 0.95rem;
+      }
+
+      ion-input {
+        flex: 1;
+        color: #E6DDCC;
+        font-size: 0.95rem;
+      }
+    }
+
+    /*Error message style */
+    .error-message {
+      color: #E1A96C;
+      font-size: 0.8rem;
+      text-align: left;
+      margin-top: 4px;
+      margin-left: 20px;
+      font-weight: 300;
     }
 
     .modal-buttons {

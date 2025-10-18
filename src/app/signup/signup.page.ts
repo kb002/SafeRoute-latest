@@ -46,11 +46,29 @@ export class SignupPage implements OnInit {
   ngOnInit() {
     this.signupForm = this.fb.group(
       {
-        username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z0-9 _]+$/)]],
-        email: ['', [Validators.required, Validators.email]],
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(20),
+            Validators.pattern(/^[A-Za-z0-9 _]+$/),
+            this.noConsecutiveSpacesValidator,
+            this.noLeadingTrailingSpacesValidator
+          ]
+        ],
+        email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
         phone: ['', [Validators.required, Validators.pattern(/^[9]\d{9}$/)]],
-        address: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/)]],
+        address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(20),
+            Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-={}[\]:;"'<>,.?/]{6,20}$/)
+          ]
+        ],
         confirmPassword: ['', [Validators.required]],
         acceptTerms: [false, [Validators.requiredTrue]],
       },
@@ -65,6 +83,22 @@ export class SignupPage implements OnInit {
     return password === confirm ? null : { passwordMismatch: true };
   }
 
+  private noConsecutiveSpacesValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (value && /\s{2,}/.test(value)) {
+      return { noConsecutiveSpaces: true };
+    }
+    return null;
+  }
+
+  private noLeadingTrailingSpacesValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (value && (value.startsWith(' ') || value.endsWith(' '))) {
+      return { noLeadingTrailingSpaces: true };
+    }
+    return null;
+  }
+
   get username() { return this.signupForm.get('username'); }
   get email() { return this.signupForm.get('email'); }
   get phone() { return this.signupForm.get('phone'); }
@@ -75,7 +109,7 @@ export class SignupPage implements OnInit {
 
   numbersOnly(event: any) {
     const value = event.target.value;
-    const digitsOnly = value.replace(/\D/g, '').slice(0, 10); 
+    const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
     this.signupForm.patchValue({ phone: digitsOnly }, { emitEvent: false });
   }
 
@@ -85,11 +119,7 @@ export class SignupPage implements OnInit {
   }
 
   async showAlert(header: string, message: string) {
-    const alert = await this.alertCtrl.create({
-      header,
-      message,
-      buttons: ['OK']
-    });
+    const alert = await this.alertCtrl.create({ header, message, buttons: ['OK'] });
     await alert.present();
   }
 
@@ -107,7 +137,9 @@ export class SignupPage implements OnInit {
     this.isSubmitting = true;
 
     try {
-      const { email, password, username, phone, address, acceptTerms } = this.signupForm.value;
+      let { email, password, username, phone, address, acceptTerms } = this.signupForm.value;
+
+      username = username.trim().replace(/\s+/g, ' ');
 
       if (!acceptTerms) {
         this.showToast('You need to agree to the Terms of Service and Privacy Policy.');
@@ -115,35 +147,25 @@ export class SignupPage implements OnInit {
         return;
       }
 
-      // Create user in Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Update Firebase Auth profile with displayName (username)
-      await updateProfile(user, { displayName: username.trim() });
-
-      // Send email verification
+      await updateProfile(user, { displayName: username });
       await sendEmailVerification(user);
 
-      // Save user in Firestore
       const userRef = doc(db, 'users', user.uid);
       await setDoc(userRef, {
         uid: user.uid,
-        username: username.trim(),
+        username,
         email,
-        //Save with +63 prefix
         phone: `+63${phone}`,
         address: address.trim(),
         createdAt: serverTimestamp()
       });
 
-      // Save username in AuthService
-      this.authService.setUsername(username.trim());
-
-      // Force sign out until email is verified
+      this.authService.setUsername(username);
       await signOut(auth);
 
-      // Show alert instead of toast
       await this.showAlert('Sign Up Successful', 'Please verify your email before logging in.');
       this.router.navigateByUrl('/login', { replaceUrl: true });
 

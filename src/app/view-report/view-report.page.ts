@@ -73,8 +73,6 @@ export class ViewReportPage implements OnInit, OnDestroy {
       this.showToast('You cannot edit verified or unverified reports.', 'warning');
       return;
     }
-
-    // ✅ Navigate to Edit Report Page
     this.router.navigate(['/edit-report'], { state: { report: this.report } });
   }
 
@@ -92,21 +90,37 @@ export class ViewReportPage implements OnInit, OnDestroy {
         {
           text: 'Delete',
           handler: async () => {
-            try {
-              const firestore = getFirestore();
-              await deleteDoc(doc(firestore, 'reports', this.reportId));
-              await this.showToast('Report deleted successfully.', 'success');
-              this.navCtrl.navigateBack('/report');
-            } catch (err) {
-              console.error(err);
-              this.showToast('Failed to delete report.', 'warning');
-            }
+            await this.deleteReport();
           },
         },
       ],
     });
 
     await alert.present();
+  }
+
+  /** 🧹 Safe delete function that avoids Firestore 400 errors */
+  private async deleteReport() {
+    const firestore = getFirestore();
+
+    // Detach listener first to prevent "channel terminate" issue
+    if (this.unsubscribeReport) {
+      this.unsubscribeReport();
+      this.unsubscribeReport = null;
+    }
+
+    try {
+      await deleteDoc(doc(firestore, 'reports', this.reportId));
+      await this.showToast('Report deleted successfully.', 'success');
+
+      // Delay small navigation to let Firestore settle
+      setTimeout(() => {
+        this.navCtrl.navigateBack('/report');
+      }, 400);
+    } catch (err) {
+      console.error('Error deleting report:', err);
+      this.showToast('Failed to delete report.', 'warning');
+    }
   }
 
   goBack() {

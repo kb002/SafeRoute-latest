@@ -17,22 +17,12 @@
     <ion-select
       [(ngModel)]="editData.category"
       interface="popover"
-      (ionChange)="onCategoryChange()"
       placeholder="Select Category"
     >
       <ion-select-option *ngFor="let category of categories" [value]="category">
         {{ category }}
       </ion-select-option>
     </ion-select>
-  </ion-item>
-
-  <!-- Other Category -->
-  <ion-item *ngIf="showOtherCategory">
-    <ion-label position="stacked">Specify Category</ion-label>
-    <ion-input
-      [(ngModel)]="editData.otherCategory"
-      placeholder="Enter category"
-    ></ion-input>
   </ion-item>
 
   <!-- Barangay -->
@@ -55,6 +45,7 @@
     <ion-input
       [(ngModel)]="editData.landmark"
       placeholder="Enter landmark"
+      maxlength="50"
     ></ion-input>
   </ion-item>
 
@@ -64,6 +55,28 @@
     <ion-input
       [(ngModel)]="editData.description"
       placeholder="Enter description"
+      maxlength="100"
+    ></ion-input>
+  </ion-item>
+
+  <!-- Date -->
+  <ion-item>
+    <ion-label position="stacked">Date</ion-label>
+    <ion-input
+      type="date"
+      [(ngModel)]="editData.date"
+      [max]="maxDate"
+      (ionChange)="onDateChange()"
+    ></ion-input>
+  </ion-item>
+
+  <!-- Time -->
+  <ion-item>
+    <ion-label position="stacked">Time</ion-label>
+    <ion-input
+      type="time"
+      [(ngModel)]="editData.time"
+      [max]="maxTime"
     ></ion-input>
   </ion-item>
 

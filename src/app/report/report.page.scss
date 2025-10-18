@@ -146,3 +146,33 @@
     }
   }
 }
+
+/* ========================= */
+/* Custom Alert Button Layout */
+/* ========================= */
+.custom-alert {
+  .alert-button-group {
+    display: flex;
+    justify-content: space-between !important;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .alert-button {
+    flex: 1;
+    font-weight: 500;
+    color: #e6ddcc;
+  }
+
+  .left-btn {
+    justify-content: flex-start;
+    text-align: left;
+    color: #e1a96c; 
+  }
+
+  .right-btn {
+    justify-content: flex-end;
+    text-align: right;
+    color: #e6ddcc;
+  }
+}

@@ -2,7 +2,7 @@
   --background: #1b3333;
   font-family: 'Made Tommy', sans-serif;
 
-  /* Header */
+  /* -------------------- Header -------------------- */
   .header {
     background-color: #1c2727;
     display: flex;
@@ -11,13 +11,19 @@
     padding: 12px 16px;
     width: 100%;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 
     ion-button {
       color: #e6ddcc;
       margin-top: 20px;
+      min-width: 40px; /* Keep header stable when add button hidden */
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       ion-icon {
-        font-size: 1.4rem; /* fallback */
         font-size: clamp(1.2rem, 3vw, 1.6rem);
       }
     }
@@ -26,28 +32,93 @@
       margin: 0;
       margin-top: 20px;
       color: #e6ddcc;
-      font-size: 1.2rem; /* fallback */
       font-size: clamp(1rem, 3vw, 1.4rem);
       font-weight: 400;
+      text-align: center;
+      flex: 1;
+    }
+
+    .back-button {
+      flex-shrink: 0;
+    }
+
+    .add-button {
+      flex-shrink: 0;
+      visibility: visible;
+
+      &[hidden] {
+        visibility: hidden; /* Keeps space even when hidden */
+      }
     }
   }
 
-  /* Contact List */
+  /* -------------------- Tabs -------------------- */
+  .contacts-tabs {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1c2727;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(225, 169, 108, 0.2);
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      color: #e6ddcc;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      padding: 8px 0;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
+
+      &.active {
+        color: #e1a96c;
+        font-weight: 600;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 20%;
+          right: 20%;
+          height: 3px;
+          background-color: #e1a96c;
+          border-radius: 2px;
+        }
+      }
+
+      &:hover {
+        color: #e1a96c;
+      }
+    }
+  }
+
+  /* -------------------- Contact List -------------------- */
   .contacts-list {
     display: flex;
     flex-direction: column;
-    margin: 30px 0;
+    margin: 20px 0;
 
     .contact-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 20px;
       padding: clamp(10px, 2vw, 16px) clamp(14px, 3vw, 20px);
       border-bottom: 1px solid rgba(225, 169, 108, 0.3);
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba(225, 169, 108, 0.05);
+      }
+
+      .contact-info {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        cursor: pointer;
+      }
 
       .contact-avatar {
-        font-size: 2.2rem; /* fallback */
         font-size: clamp(2rem, 6vw, 2.5rem);
         color: #e1a96c;
         margin-right: 10px;
@@ -55,21 +126,30 @@
 
       .contact-name {
         color: #e6ddcc;
-        font-size: 1rem; /* fallback */
         font-size: clamp(1rem, 3vw, 1.2rem);
         font-weight: 400;
         flex: 1;
       }
 
-      .contact-chevron {
-        font-size: 1.2rem; /* fallback */
-        font-size: clamp(1rem, 3vw, 1.4rem);
-        color: #e6ddcc;
+      .call-button {
+        --color: #e1a96c;
+        --padding-start: 0;
+        --padding-end: 0;
+        margin-left: 10px;
+        transition: transform 0.2s ease;
+
+        ion-icon {
+          font-size: clamp(1.2rem, 3vw, 1.6rem);
+        }
+
+        &:hover {
+          transform: scale(1.1);
+        }
       }
     }
   }
 
-  /* Loading + No Contacts */
+  /* -------------------- Loading & Empty States -------------------- */
   .loading,
   .no-contacts {
     display: flex;
@@ -77,128 +157,18 @@
     align-items: center;
     justify-content: center;
     margin-top: clamp(20px, 8vw, 40px);
+    text-align: center;
 
     ion-icon {
-      font-size: 2.2rem; /* fallback */
       font-size: clamp(2rem, 6vw, 2.5rem);
       color: #e1a96c;
     }
 
     p {
       margin-top: 6px;
-      font-size: 0.9rem; /* fallback */
       font-size: clamp(0.9rem, 2.5vw, 1rem);
       color: #e6ddcc;
       font-weight: 300;
-    }
-  }
-}
-
-/* Modal styles */
-.edit-profile-modal {
-  font-family: 'Made Tommy', sans-serif;
-
-  ion-toolbar {
-    --background: #1c2727;
-    --color: #e6ddcc;
-  }
-
-  .modal-header {
-    background-color: #1c2727;
-    color: #e6ddcc;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-    padding: clamp(10px, 2vw, 15px);
-
-    ion-title {
-      font-weight: 400;
-      font-size: 1rem; /* fallback */
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      color: #e6ddcc;
-      margin-top: 20px;
-    }
-
-    ion-button {
-      margin-top: 20px;
-      color: #e1a96c;
-
-      ion-icon {
-        font-size: 1.4rem; /* fallback */
-        font-size: clamp(1.2rem, 3vw, 1.6rem);
-        color: #e6ddcc;
-      }
-    }
-  }
-
-  .modal-content {
-    --background: #1b3333;
-    padding: clamp(15px, 4vw, 20px);
-
-    ion-item {
-      margin-top: 15px;
-      --background: transparent;
-      --color: #e6ddcc;
-      --border-color: rgba(225, 169, 108, 0.5);
-      border-radius: 10px;
-      margin-bottom: 12px;
-
-      ion-label {
-        color: #e1a96c;
-        font-weight: 300;
-        font-size: 0.9rem; /* fallback */
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
-      }
-
-      ion-input {
-        color: #e6ddcc;
-        font-weight: 300;
-        font-size: 0.9rem; /* fallback */
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
-      }
-    }
-
-    /* ✅ Fix relationship dropdown */
-    .relationship-item {
-      ion-select {
-        text-align: left;
-        justify-content: flex-start;
-        --padding-start: 0;
-        --padding-end: 24px;
-      }
-
-      .select-icon {
-        right: 8px !important;
-      }
-    }
-
-    .modal-buttons {
-      margin-top: 20px;
-      display: flex;
-      gap: clamp(12px, 4vw, 20px);
-      justify-content: center;
-
-      .save-btn,
-      .cancel-btn {
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.9rem; /* fallback */
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
-        width: clamp(120px, 30vw, 150px);
-        height: clamp(28px, 6vw, 36px);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      }
-
-      .save-btn {
-        --background: #e1a96c;
-        --color: #1c2727;
-        text-transform: none;
-      }
-
-      .cancel-btn {
-        --background: #1c2727;
-        --color: #e6ddcc;
-        text-transform: none;
-        box-shadow: 0 0 5px rgba(220, 159, 74, 0.6);
-      }
     }
   }
 }

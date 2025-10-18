@@ -18,12 +18,14 @@
       <ion-input
         placeholder="Email"
         type="email"
-        formControlName="email">
+        formControlName="email"
+        maxlength="50">
       </ion-input>
     </div>
     <div class="error-message" *ngIf="email?.touched && email?.invalid">
       <small *ngIf="email?.errors?.['required']">Email is required.</small>
       <small *ngIf="email?.errors?.['email']">Enter a valid email.</small>
+      <small *ngIf="email?.errors?.['maxlength']">Email must not exceed 50 characters.</small>
     </div>
 
     <!-- Password with toggle eye -->
@@ -42,9 +44,9 @@
     </div>
     <div class="error-message" *ngIf="password?.touched && password?.invalid">
       <small *ngIf="password?.errors?.['required']">Password is required.</small>
-      <small *ngIf="password?.errors?.['minlength']">
-        Password must be at least 6 characters.
-      </small>
+      <small *ngIf="password?.errors?.['minlength']">At least 6 characters.</small>
+      <small *ngIf="password?.errors?.['maxlength']">Maximum of 20 characters.</small>
+      <small *ngIf="password?.errors?.['pattern']">Include at least 1 letter and 1 number.</small>
     </div>
 
     <!-- Forgot password -->

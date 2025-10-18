@@ -1,10 +1,10 @@
 .view-contact-content {
-  --background: #1B3333;
+  --background: #1b3333;
   font-family: 'Made Tommy', sans-serif;
 
   /* Header */
   .header {
-    background-color: #1C2727;
+    background-color: #1c2727;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -15,7 +15,7 @@
     border-bottom-right-radius: 20px;
 
     ion-button {
-      color: #E6DDCC;
+      color: #e6ddcc;
       margin-top: 20px;
 
       ion-icon {
@@ -26,13 +26,13 @@
     h1 {
       margin: 0;
       margin-top: 20px;
-      color: #E6DDCC;
+      color: #e6ddcc;
       font-size: clamp(1rem, 3vw, 1.3rem);
       font-weight: 400;
     }
   }
 
-  /* Loading + No Contact */
+  /* Loading + Empty States */
   .loading,
   .no-contact {
     display: flex;
@@ -40,7 +40,7 @@
     align-items: center;
     justify-content: center;
     margin-top: clamp(40px, 10vw, 60px);
-    color: #E6DDCC;
+    color: #e6ddcc;
 
     ion-spinner {
       margin-bottom: 12px;
@@ -48,7 +48,7 @@
 
     ion-icon {
       font-size: clamp(2rem, 6vw, 2.5rem);
-      color: #E1A96C;
+      color: #e1a96c;
       margin-bottom: 8px;
     }
 
@@ -67,14 +67,14 @@
 
     .contact-avatar {
       font-size: clamp(4rem, 14vw, 6rem);
-      color: #E1A96C;
+      color: #e1a96c;
       margin-bottom: 16px;
     }
 
     .contact-name {
       font-size: clamp(1.2rem, 4vw, 1.6rem);
       font-weight: 500;
-      color: #E6DDCC;
+      color: #e6ddcc;
       margin-bottom: clamp(20px, 6vw, 30px);
     }
 
@@ -96,19 +96,39 @@
         flex-direction: column;
 
         label {
-          color: #E1A96C;
+          color: #e1a96c;
           font-size: clamp(0.8rem, 2.5vw, 0.9rem);
           margin-bottom: 4px;
         }
 
         p {
-          color: #E6DDCC;
+          color: #e6ddcc;
           font-size: clamp(1rem, 3vw, 1.1rem);
           margin: 0;
         }
       }
     }
 
+    /* Call Now Button */
+    .call-now-btn {
+      --background: #e1a96c;
+      --color: #1c2727;
+      width: 90%;
+      max-width: 400px;
+      margin-top: clamp(10px, 3vw, 15px);
+      font-weight: 600;
+      border-radius: 12px;
+      height: clamp(38px, 8vw, 46px);
+      font-size: clamp(0.95rem, 3vw, 1rem);
+      text-transform: none;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+
+    /* Edit/Delete Buttons */
     .action-buttons {
       margin-top: clamp(16px, 6vw, 24px);
       width: 90%;
@@ -128,9 +148,9 @@
       }
 
       .edit-btn {
-        --background: #E1A96C;
-        --color: #1B3333;
-        text-transform: none; 
+        --background: #e1a96c;
+        --color: #1b3333;
+        text-transform: none;
         &::part(native) {
           border-radius: 12px;
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
@@ -138,9 +158,9 @@
       }
 
       .delete-btn {
-        --background: #1C2727;
-        --color: #E6DDCC;
-        text-transform: none; 
+        --background: #1c2727;
+        --color: #e6ddcc;
+        text-transform: none;
         &::part(native) {
           border-radius: 12px;
           box-shadow: 0 0 5px rgba(220, 159, 74, 0.6);
@@ -150,60 +170,92 @@
   }
 }
 
-/* Modal styling */
-.edit-profile-modal {
-  font-family: 'Made Tommy', sans-serif;
+/* Modal Styling */
+::ng-deep ion-modal.edit-contact-modal {
+  --backdrop-opacity: 0.6;
 
-  ion-toolbar {
-    --background: #1C2727;   
-    --color: #E6DDCC;   
-  }
-
-  .modal-header {
-    background-color: #1C2727;
-    color: #E6DDCC;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-    padding: clamp(10px, 3vw, 15px);
+  ion-header.modal-header {
+    ion-toolbar {
+      --background: #1c2727;
+      --color: #e6ddcc;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+      padding: clamp(10px, 3vw, 15px);
+    }
 
     ion-title {
       font-weight: 400;
       margin-top: 20px;
       font-size: clamp(1rem, 3vw, 1.2rem);
-      color: #E6DDCC;
+      color: #e6ddcc;
     }
 
     ion-button {
       margin-top: 20px;
-      color: #E1A96C;
+      --color: #e6ddcc;
+      --background: transparent;
 
       ion-icon {
         font-size: clamp(1.2rem, 4vw, 1.6rem);
-        color: #E6DDCC;
+        color: #e6ddcc;
       }
     }
   }
 
-  .modal-content {
-    --background: #1B3333;
+  .error-message {
+    color: #E1A96C;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    margin-top: -8px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    font-weight: 300;
+  }
+
+  ion-content.modal-content {
+    --background: #1b3333;
+    font-family: 'Made Tommy', sans-serif;
     padding: clamp(15px, 4vw, 20px);
 
     ion-item {
       margin-top: clamp(12px, 4vw, 20px);
       --background: transparent;
-      --color: #E6DDCC;
+      --color: #e6ddcc;
       --border-color: rgba(225, 169, 108, 0.5);
       border-radius: 12px;
       margin-bottom: clamp(10px, 3vw, 15px);
-      
+
       ion-label {
-        color: #E1A96C;
+        color: #e1a96c;
         font-weight: 300;
         font-size: clamp(0.9rem, 2.5vw, 1rem);
       }
 
-      ion-input {
-        color: #E6DDCC;
+      ion-input,
+      ion-select {
+        color: #e6ddcc;
         font-weight: 300;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+      }
+    }
+
+    /*Phone Input Inline Styling (+63 prefix) */
+    .phone-input {
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-top: 6px;
+
+      .prefix {
+        color: #e6ddcc;
+        font-weight: 500;
+        margin-right: 4px;
+        flex-shrink: 0;
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+      }
+
+      ion-input {
+        flex: 1;
+        color: #e6ddcc;
         font-size: clamp(0.9rem, 2.5vw, 1rem);
       }
     }
@@ -224,17 +276,17 @@
       }
 
       .save-btn {
-        --background: #E1A96C;
-        --color: #1C2727;
+        --background: #e1a96c;
+        --color: #1c2727;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-        text-transform: none; 
+        text-transform: none;
       }
 
       .cancel-btn {
-        --background: #1C2727;
-        --color: #E6DDCC;
+        --background: #1c2727;
+        --color: #e6ddcc;
         box-shadow: 0 0 5px rgba(220, 159, 74, 0.6);
-        text-transform: none; 
+        text-transform: none;
       }
     }
   }
